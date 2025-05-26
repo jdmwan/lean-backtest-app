@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Strategy Backtester</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .slider-container {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    #results {
+      margin-top: 30px;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Backtest Moving Average Strategy</h1>
+
+  <div class="slider-container">
+    <label for="short">Short MA Window: <span id="shortValue">10</span></label>
+    <input type="range" id="short" min="5" max="50" value="10" oninput="updateLabel('short')">
+  </div>
+
+  <div class="slider-container">
+    <label for="long">Long MA Window: <span id="longValue">30</span></label>
+    <input type="range" id="long" min="10" max="100" value="30" oninput="updateLabel('long')">
+  </div>
+
+  <div class="slider-container">
+    <label for="cash">Starting Cash: <span id="cashValue">100000</span></label>
+    <input type="range" id="cash" min="0" max="200000" value="100000" oninput="updateLabel('cash')">
+  </div>
+
+  <button onclick="runBacktest()">Run Backtest</button>
+
+  <div id="loading-indicator" style="display:none; margin-bottom: 10px;">
+    <strong style="color: orange;">Running backtest...</strong>
+  </div>
+  
+  <div id="results">
+    <h3>Results:</h3>
+    <pre id="output">No results yet.</pre>
+  </div>
+
+  <script>
+    function runBacktest() {
+      const short = document.getElementById("short").value;
+      const long = document.getElementById("long").value;
+      const cash = document.getElementById("cash").value;
+
+      // Show the loading indicator
+      const loading = document.getElementById("loading-indicator");
+      loading.style.display = "block";
+      loading.innerHTML = "<strong style='color: orange;'>Running backtest...</strong>";
+
+      fetch("/run-backtest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          short_window: parseInt(short),
+          long_window: parseInt(long),
+          starting_cash: parseInt(cash)
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+        loading.innerHTML = "<strong style='color: green;'>Backtest complete.</strong>";
+        setTimeout(() => loading.style.display = "none", 1500);  // hide after 1.5s
+      })
+      .catch(err => {
+        document.getElementById("output").textContent = "Error: " + err;
+        loading.innerHTML = "<strong style='color: red;'>Error running backtest</strong>";
+      });
+    }
+
+  </script>
+</body>
+</html>

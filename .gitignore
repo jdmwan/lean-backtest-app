@@ -1,0 +1,11 @@
+__pycache__/
+*.log
+*.csv
+*.json
+*.db
+venv/
+strategies/*/backtests/
+data/
+.idea/
+.DS_Store
+.QuantConnect/
