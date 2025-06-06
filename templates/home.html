@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Strategy Backtester</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <h1>Backtest Moving Average Strategy</h1>
+    <div class="slider-container">
+        <label for="cash">Starting Cash: <span id="cashValue">100000</span></label>
+        <input type="range" id="cash" min="0" max="200000" value="100000" oninput="updateLabel('cash')">
+    </div>
+    <div class="toolbox">
+        <div class="draggable" draggable="true">
+            <div class="slider-container">
+                <label for="short">Short MA Window: <span id="shortValue">10</span></label>
+                <input type="range" id="short" min="5" max="50" value="10" oninput="updateLabel('short')">
+            </div>
+    
+            <div class="slider-container">
+                <label for="long">Long MA Window: <span id="longValue">30</span></label>
+                <input type="range" id="long" min="10" max="100" value="30" oninput="updateLabel('long')">
+            </div>
+        </div>
+        <div class="draggable" draggable="true">
+            <div class="slider-container">
+                <label for="short">MA Window: <span id="movingValue">10</span></label>
+                <input type="range" id="moving" min="5" max="50" value="10" oninput="updateLabel('moving')">
+            </div>
+            <div class="offset-value">
+                <label for="short">Offset: <span id="offsetValue">10</span></label>
+                <input type="range" id="offset" min="5" max="50" value="10" oninput="updateLabel('offset')">
+            </div>
+        </div>
+        
+    </div>
+
+
+
+    <button onclick="runBacktest()">Run Backtest</button>
+
+    <div id="loading-indicator" style="display:none; margin-bottom: 10px;">
+        <strong style="color: orange;">Running backtest...</strong>
+    </div>
+  
+    <div id="results">
+        <h3>Results:</h3>
+        <pre id="output">No results yet.</pre>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+</body>
+</html>

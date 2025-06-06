@@ -9,6 +9,8 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+@app.route('/run-')
+
 @app.route('/run-backtest', methods=['POST'])
 def run_backtest():
     data = request.json

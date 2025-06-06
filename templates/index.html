@@ -3,30 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Strategy Backtester</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-    }
-    .slider-container {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
-    input[type="range"] {
-      width: 100%;
-    }
-    #results {
-      margin-top: 30px;
-      padding: 10px;
-      background-color: #f4f4f4;
-      border-radius: 8px;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
 <body>
   <h1>Backtest Moving Average Strategy</h1>
@@ -56,39 +34,8 @@
     <h3>Results:</h3>
     <pre id="output">No results yet.</pre>
   </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 
-  <script>
-    function runBacktest() {
-      const short = document.getElementById("short").value;
-      const long = document.getElementById("long").value;
-      const cash = document.getElementById("cash").value;
 
-      // Show the loading indicator
-      const loading = document.getElementById("loading-indicator");
-      loading.style.display = "block";
-      loading.innerHTML = "<strong style='color: orange;'>Running backtest...</strong>";
-
-      fetch("/run-backtest", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          short_window: parseInt(short),
-          long_window: parseInt(long),
-          starting_cash: parseInt(cash)
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("output").textContent = JSON.stringify(data, null, 2);
-        loading.innerHTML = "<strong style='color: green;'>Backtest complete.</strong>";
-        setTimeout(() => loading.style.display = "none", 1500);  // hide after 1.5s
-      })
-      .catch(err => {
-        document.getElementById("output").textContent = "Error: " + err;
-        loading.innerHTML = "<strong style='color: red;'>Error running backtest</strong>";
-      });
-    }
-
-  </script>
 </body>
 </html>
