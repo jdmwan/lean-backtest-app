@@ -22,9 +22,9 @@ function runBacktest() {
     let lists = [];
     let sliders = document.querySelectorAll('.workspace input[type="range"]');
     sliders.forEach(slider => {
-        lists.push({param:slider.id })
+        lists.push({param:slider.id, value:slider.value})
     })
-
+    payload = JSON.stringify(lists,null,2)
     // Show the loading indicator
     const loading = document.getElementById("loading-indicator");
     loading.style.display = "block";
@@ -33,11 +33,7 @@ function runBacktest() {
     fetch("/run-backtest", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        short_window: parseInt(short),
-        long_window: parseInt(long),
-        starting_cash: parseInt(cash)
-      })
+      body: payload
     })
     .then(res => res.json())
     .then(data => {
