@@ -9,7 +9,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route('/run-')
+
 
 @app.route('/run-backtest', methods=['POST'])
 def run_backtest():
@@ -21,11 +21,7 @@ def run_backtest():
     # Step 1: Write params.json
     param_path = os.path.join("strategies", "MyProject", "params.json")
     with open(param_path, "w") as f:
-        json.dump({
-            "short_window": short,
-            "long_window": long,
-            "starting_cash": cash
-        }, f)
+        json.dump(data, f)
 
     # Step 2: Run lean backtest
     subprocess.run(["lean", "backtest", "strategies/MyProject"], stdout=subprocess.DEVNULL)
